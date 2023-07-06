@@ -14,3 +14,8 @@ dependencyResolutionManagement {
 }
 rootProject.name = "M2P"
 include ':app'
+include ':domain'
+include ':presentation'
+include ':remote'
+include ':cache'
+include ':data'
