@@ -12,7 +12,7 @@ data class Pokemon(
     @PrimaryKey(autoGenerate = false)
     val id: String,
     val name: String,
-    val subtypes: String,
+    val subtypes: ArrayList<String>,
     val level: String? = null,
     val hp: String,
     val types: ArrayList<String>,

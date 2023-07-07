@@ -1,7 +1,6 @@
 package com.wrecker.cache.mapper
 
 import com.wrecker.cache.entity.Pokemon
-import com.wrecker.domain.model.Data
 import javax.inject.Inject
 
 class PokemonMapper @Inject constructor(
@@ -28,7 +27,7 @@ class PokemonMapper @Inject constructor(
             id = type.id,
             name = type.name,
             subtypes = type.subtypes,
-            level = type.level ?: "0",
+            level = type.level,
             hp = type.hp,
             types = type.types,
             attacks = type.attacks,

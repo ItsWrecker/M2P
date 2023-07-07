@@ -12,7 +12,7 @@ java {
 }
 
 dependencies {
-    implementation(project(Modules.data))
+    api(project(Modules.data))
     implementation(RemoteDependencies.coroutine)
     implementation(RemoteDependencies.javax)
     RemoteDependencies.retrofit.forEach {

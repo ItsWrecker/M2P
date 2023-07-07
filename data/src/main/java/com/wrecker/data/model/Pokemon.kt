@@ -8,7 +8,7 @@ import com.wrecker.domain.model.Weaknesses
 data class Pokemon(
     val id: String,
     val name: String,
-    val subtypes: String,
+    val subtypes: ArrayList<String>,
     val level: String,
     val hp: String,
     val types: ArrayList<String>,

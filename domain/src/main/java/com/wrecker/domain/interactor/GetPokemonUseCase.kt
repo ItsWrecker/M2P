@@ -7,11 +7,9 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 
-typealias GetPokeMonUseCase = BaseUseCase<Int, Flow<Event<Responses>>>
-
 class GetPokemonUseCase @Inject constructor(
     private val pokemonRepository: PokemonRepository
-) : GetPokeMonUseCase {
+) : BaseUseCase<Int, Flow<Event<Responses>>> {
 
     override suspend fun invoke(params: Int): Flow<Event<Responses>> {
         return pokemonRepository.getPokemon(params)

@@ -37,7 +37,7 @@ android {
 }
 
 dependencies {
-    api(project(Modules.data))
+    implementation(project(Modules.data))
     implementation(CacheDependencies.javax)
     CacheDependencies.room.forEach {
         api(it)
