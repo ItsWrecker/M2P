@@ -8,10 +8,13 @@ import javax.inject.Inject
 class PokemonRemoteDataSource @Inject constructor(
 private val pokemonRemote: PokemonRemote
 ) : PokemonDataSource{
-    override suspend fun getPokemon(): List<Pokemon> {
-        return pokemonRemote.getPokemon()
+    override suspend fun getPokemon(page: Int): List<Pokemon> {
+        return pokemonRemote.getPokemon(page)
     }
 
+    override suspend fun getPokemonDetails(id: String): Pokemon {
+        throw UnsupportedOperationException("not supported")
+    }
     override suspend fun updatePokemon(listPokemon: List<Pokemon>) {
         throw UnsupportedOperationException("Update is not supported for remote")
     }

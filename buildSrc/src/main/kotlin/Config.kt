@@ -1,4 +1,3 @@
-
 object Config {
 
     object Android {
@@ -18,6 +17,8 @@ object Config {
         const val kotlinKapt = "kotlin-kapt"
         const val dagger = "com.google.dagger.hilt.android"
         const val androidLibrary = "com.android.library"
+        const val serializer = "org.jetbrains.kotlin.plugin.serialization"
+
     }
 
 

@@ -7,7 +7,8 @@ interface PokemonCache {
     suspend fun getPokemon(): List<Pokemon>
     suspend fun getPokemonByHp(): List<Pokemon>
     suspend fun getPokemonByLevel(): List<Pokemon>
+    suspend fun getPokemonDetails(id: String): Pokemon
     suspend fun isCached(): Boolean
-    fun setLastCachedTime(lastCache: Long)
-    fun isExpired(): Boolean
+    suspend fun setLastCachedTime(lastCache: Long)
+   suspend fun isExpired(): Boolean
 }

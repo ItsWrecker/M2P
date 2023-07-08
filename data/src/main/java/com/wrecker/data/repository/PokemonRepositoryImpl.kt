@@ -23,9 +23,10 @@ class PokemonRepositoryImpl @Inject constructor(
         try {
             val isCached = dataSourceFactory.getCacheDataSource().isCached()
             val pokemonList =
-                dataSourceFactory.getDataSource(isCached).getPokemon().map { pokemon: Pokemon ->
-                    mapper.mapToEntity(pokemon)
-                }.toCollection(ArrayList())
+                dataSourceFactory.getDataSource(isCached).getPokemon(pageNumber)
+                    .map { pokemon: Pokemon ->
+                        mapper.mapToEntity(pokemon)
+                    }.toCollection(ArrayList())
             if (pokemonList.isEmpty()) return@flow emit(Event.Error("error while fetching the pokemon"))
             updatePokemon(pokemonList)
             return@flow emit(Event.Success(Responses(data = pokemonList)))
@@ -47,7 +48,7 @@ class PokemonRepositoryImpl @Inject constructor(
                 return@flow emit(Event.Success(Responses(data = pokemonList)))
             } else {
                 val pokemonList =
-                    dataSourceFactory.getRemoteDataSource().getPokemon().map { pokemon: Pokemon ->
+                    dataSourceFactory.getRemoteDataSource().getPokemon(0).map { pokemon: Pokemon ->
                         mapper.mapToEntity(pokemon)
                     }.toCollection(ArrayList())
                 updatePokemon(pokemonList)
@@ -77,7 +78,7 @@ class PokemonRepositoryImpl @Inject constructor(
                 return@flow emit(Event.Success(Responses(data = pokemonList)))
             } else {
                 val pokemonList =
-                    dataSourceFactory.getRemoteDataSource().getPokemon().map { pokemon: Pokemon ->
+                    dataSourceFactory.getRemoteDataSource().getPokemon(0).map { pokemon: Pokemon ->
                         mapper.mapToEntity(pokemon)
                     }.toCollection(ArrayList())
 
@@ -98,6 +99,34 @@ class PokemonRepositoryImpl @Inject constructor(
         val pokemonEntity = pokemonList.toList().map { data ->
             mapper.mapFromEntity(data)
         }
+
         dataSourceFactory.getCacheDataSource().updatePokemon(pokemonEntity)
     }
+
+
+    override suspend fun getPokemonDetails(id: String): Flow<Event<Data>> = flow {
+
+        emit(Event.Loading)
+        try {
+            val data = dataSourceFactory.getCacheDataSource().getPokemonDetails(id).let {
+                return@let Data(
+                    id = it.id,
+                    name = it.name,
+                    subtypes = it.subtypes,
+                    level = it.level,
+                    attacks = it.attacks,
+                    images = it.images,
+                    hp = it.hp,
+                    weaknesses = it.weaknesses,
+                    types = it.types,
+                    resistances = it.resistances
+
+                )
+            }
+            return@flow emit(Event.Success(data))
+        } catch (exception: Exception) {
+            return@flow emit(Event.Error(exception.message.toString()))
+        }
+    }
+
 }

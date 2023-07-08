@@ -4,6 +4,7 @@ plugins {
     id(Config.Plugins.androidLibrary)
     id(Config.Plugins.kotlinAndroid)
     id(Config.Plugins.kotlinKapt)
+    id(Config.Plugins.serializer)
 }
 
 android {
@@ -44,5 +45,8 @@ dependencies {
     }
     implementation(CacheDependencies.gson)
     kapt(CacheDependencies.roomKapt)
+    CacheDependencies.dataStore.forEach {
+        implementation(it)
+    }
 
 }

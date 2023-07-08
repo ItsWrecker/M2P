@@ -33,7 +33,7 @@ object ServiceFactory {
     private fun createLoggingInterceptor(isDebug: Boolean): HttpLoggingInterceptor {
         return HttpLoggingInterceptor().apply {
             level = if (isDebug) {
-                HttpLoggingInterceptor.Level.BASIC
+                HttpLoggingInterceptor.Level.BODY
             } else {
                 HttpLoggingInterceptor.Level.NONE
             }

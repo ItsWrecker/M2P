@@ -10,7 +10,7 @@ open class PokemonDataSourceFactory @Inject constructor(
     private val remoteDataSource: PokemonRemoteDataSource
 ) {
 
-    open fun getDataSource(isCached: Boolean): PokemonDataSource {
+    open suspend fun getDataSource(isCached: Boolean): PokemonDataSource {
         return if (isCached && !pokemonCached.isExpired()) getCacheDataSource()
         else getRemoteDataSource()
     }

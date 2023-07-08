@@ -1,3 +1,6 @@
+import dependencies.AppDependencies
+import dependencies.CacheDependencies
+
 plugins {
     id(Config.Plugins.android)
     id(Config.Plugins.kotlinAndroid)
@@ -7,7 +10,7 @@ plugins {
 }
 android {
     namespace = Config.namespace
-    compileSdk=Config.Android.androidCompileSdkVersion
+    compileSdk = Config.Android.androidCompileSdkVersion
 
     defaultConfig {
         applicationId = Environments.Release.appId
@@ -16,7 +19,7 @@ android {
         versionCode = Environments.Release.appVersionCode
         versionName = Environments.Release.appVersionName
 
-        testInstrumentationRunner=Config.testRunner
+        testInstrumentationRunner = Config.testRunner
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -58,20 +61,24 @@ dependencies {
 
     implementation(project(Modules.domain))
     implementation(project(Modules.data))
-    api(project(Modules.remote))
+    implementation(project(Modules.remote))
     implementation(project(Modules.cache))
     implementation(project(Modules.presentation))
 
-    implementation(Dependencies.Core.coreKtx)
-    implementation(Dependencies.Core.lifecycle)
-    implementation(Dependencies.Core.composeActivity)
-    implementation(platform(Dependencies.Compose.composeBOM))
-    implementation(Dependencies.Compose.composeUI)
-    implementation(Dependencies.Compose.composeUIGraphics)
-    implementation(Dependencies.Compose.composeMaterial)
-    implementation(Dependencies.Compose.composePreview)
 
-    implementation(Dependencies.Inject.hilt)
-    kapt(Dependencies.Inject.hiltCompiler)
+    implementation(platform(Dependencies.Compose.composeBOM))
+    AppDependencies.core.forEach {
+        implementation(it)
+    }
+    AppDependencies.compose.forEach {
+        implementation(it)
+    }
+    implementation(AppDependencies.hilt)
+    kapt(AppDependencies.hiltCompiler)
+
+    implementation(AppDependencies.glide)
+
+    implementation(CacheDependencies.dataStore.first())
+
 
 }

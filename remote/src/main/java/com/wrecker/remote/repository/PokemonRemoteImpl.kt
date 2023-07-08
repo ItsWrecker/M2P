@@ -10,12 +10,14 @@ class PokemonRemoteImpl @Inject constructor(
     private val pokemonApi: PokemonApi,
     private val mapper: PokemonEntityMapper
 ) : PokemonRemote {
-    override suspend fun getPokemon(): List<Pokemon> {
-        val response = pokemonApi.getPokemonData(1)
+    override suspend fun getPokemon(page: Int): List<Pokemon> {
+        val response = pokemonApi.getPokemonData(10)
+
         if (response.isSuccessful) {
             val data = response.body()?.data?.map { data ->
                 mapper.mapFromModel(data)
             }
+            println("NETWORK==> $data")
             return data ?: emptyList()
         }
         return emptyList()

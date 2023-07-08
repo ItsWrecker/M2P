@@ -16,7 +16,7 @@ class PokemonMapper @Inject constructor(
             types = type.types,
             attacks = type.attacks,
             weaknesses = type.weaknesses,
-            resistances = type.resistances,
+            resistances = type.resistances ?: arrayListOf(),
             images = type.images
         )
     }

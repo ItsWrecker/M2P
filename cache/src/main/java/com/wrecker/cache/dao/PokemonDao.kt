@@ -12,14 +12,17 @@ interface PokemonDao {
     @Upsert
     fun upsertPokemon(vararg pokemon: Pokemon)
 
-    @Query("SELECT * FROM pokemon")
+    @Query("SELECT * FROM pokemon ORDER BY name ASC")
     fun getPokemon(): Flow<List<Pokemon>>
-    @Query("SELECT * FROM pokemon ORDER BY level")
+
+    @Query("SELECT * FROM pokemon ORDER BY level ASC")
     fun getPokemonOrderByLevel(): Flow<List<Pokemon>>
 
-    @Query("SELECT * FROM pokemon ORDER BY hp")
+    @Query("SELECT * FROM pokemon ORDER BY hp ASC")
     fun getPokemonOrderByHP(): Flow<List<Pokemon>>
 
+    @Query("SELECT * FROM pokemon WHERE id =:id")
+    suspend fun getPokemonDetails(id: String): Pokemon
 
 
 }

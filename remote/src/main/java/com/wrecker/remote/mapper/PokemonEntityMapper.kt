@@ -18,7 +18,7 @@ class PokemonEntityMapper @Inject constructor(
             types = model.types,
             attacks = model.attacks,
             weaknesses = model.weaknesses,
-            resistances = model.resistances,
+            resistances = model.resistances?: arrayListOf(),
             images = model.images
         )
     }

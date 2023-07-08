@@ -1,15 +1,19 @@
 package com.wrecker.cache.repository
 
+import androidx.datastore.core.DataStore
 import com.wrecker.cache.database.PokemonDatabase
+import com.wrecker.cache.entity.Cache
 import com.wrecker.cache.mapper.PokemonMapper
 import com.wrecker.data.model.Pokemon
 import com.wrecker.data.repository.PokemonCache
 import kotlinx.coroutines.flow.first
+import java.time.Instant
 import javax.inject.Inject
 
 class PokemonCachedImpl @Inject constructor(
     private val pokemonDatabase: PokemonDatabase,
-    private val mapper: PokemonMapper
+    private val mapper: PokemonMapper,
+    private val dataStore: DataStore<Cache>
 ) : PokemonCache {
     override suspend fun updatePokemon(listPokemon: List<Pokemon>) {
         listPokemon.map {
@@ -38,15 +42,28 @@ class PokemonCachedImpl @Inject constructor(
     }
 
     override suspend fun isCached(): Boolean {
-        return false
+        return dataStore.data.first().cacheTimestamp != 0L
     }
 
-    override fun setLastCachedTime(lastCache: Long) {
-
+    override suspend fun setLastCachedTime(lastCache: Long) {
+        dataStore.updateData {
+            it.copy(cacheTimestamp = lastCache)
+        }
     }
 
-    override fun isExpired(): Boolean {
-        return true
+    //if last update was 30 min ago, means cache is expired
+    override suspend fun isExpired(): Boolean {
+        val cachedTime=  dataStore.data.first().cacheTimestamp
+        val currentTimestamp = Instant.now().toEpochMilli()
+        val differenceInMilliseconds = currentTimestamp - cachedTime
+        val differenceInMinutes = differenceInMilliseconds / (1000 * 60)
+        return differenceInMinutes > 30
+    }
+
+    override suspend fun getPokemonDetails(id: String): Pokemon {
+        return pokemonDatabase.getPokemonDao().getPokemonDetails(id).let {
+            return@let mapper.mapFromCache(it)
+        }
     }
 
 }
