@@ -56,7 +56,7 @@ The following libraries and frameworks were utilized in this project:
 
 To run the app locally, follow these steps:
 
-1. Clone the repository: `git clone https://github.com/your/repo.git`
+1. Clone the repository: `git clone https://github.com/ItsWrecker/M2P.git`
 2. Open the project in Android Studio.
 3. Build the project to resolve dependencies.
 4. Run the app on an emulator or a physical device.
